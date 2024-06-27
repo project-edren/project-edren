@@ -1,16 +1,12 @@
 
 function love.load()
-    x = 100
-    increment = true
-    speed = 300
+    Player = require "player"
+    Enemy = require "enemy"
 
-    playerX = 200
-    playerY = 150
-    playerSpeed = 300
+    enemy = Enemy:new { y = 50 }
 
-    PlayerSprite = love.graphics.newImage("JustLink.png")
-    width  = PlayerSprite:getWidth()
-	height = PlayerSprite:getHeight()
+    player = Player:new {x = 200, y = 450, sX = 2, sY = 2}
+    player:loadSprite()
 end
 
 function love.draw()
@@ -18,35 +14,25 @@ function love.draw()
     love.graphics.print("Hello, world", 400, 300)
     --love.graphics.setColor(1, 0, 0)
     --local angle  = love.timer.getTime() * 2*math.pi / 2.5
-    love.graphics.draw(PlayerSprite, playerX, playerY , 0, 2, 2, width, height)
-    love.graphics.setColor(1, 1, 0)
-    love.graphics.rectangle("line", x, 50, 200, 150)
+    player:draw()
+    enemy:draw()
 end
 
 function love.update(dt)
-    if increment then
-        x = x + speed * dt
-    else
-        x = x - speed * dt
-    end 
-    if x > 590 then 
-        increment = false
-    end
-    if x <= 0 then
-        increment = true
-    end
+    
+    enemy:update(dt)
 
     -- Pelota
     if love.keyboard.isDown("right") then
-        playerX = playerX + speed * dt
+        player:control("right", dt)
     end
     if love.keyboard.isDown("left") then
-        playerX = playerX - speed * dt
+        player:control("left", dt)
     end
     if love.keyboard.isDown("up") then
-        playerY = playerY - speed * dt
+        player:control("up", dt)
     end
     if love.keyboard.isDown("down") then
-        playerY = playerY + speed * dt
+        player:control("down", dt)
     end
 end
