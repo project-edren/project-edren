@@ -2,16 +2,16 @@ Player = {x = 0, y = 0, sX = 1, sY = 1, speed = 300, sprite = nil}
 Player.__index = Player
 local Controls = {
     ["right"] = function (player, dt)
-        player.x = player.x + player.speed * dt
+        player:move(player.speed * dt)
     end,
     ["left"] = function (player, dt)
-        player.x = player.x - player.speed * dt
+        player:move(-player.speed * dt)
     end,
     ["up"] = function (player, dt)
-        player.y = player.y - player.speed * dt
+        player:move(0, -player.speed * dt)
     end,
     ["down"] = function (player, dt)
-        player.y = player.y + player.speed * dt
+        player:move(0, player.speed * dt)
     end,
 }
 
@@ -24,8 +24,25 @@ function Player.loadSprite (self)
 end
 
 function Player.move (self, x, y)
-  self.x = self.x + x
-  self.y = self.y + y
+    local maxX = love.graphics.getWidth() - self.width * self.sX
+    local maxY = love.graphics.getHeight() - self.height * self.sY
+
+    x = x or 0
+    y = y or 0
+
+    self.x = self.x + x
+    if self.x < 0 then
+        self.x = 0
+    elseif self.x > maxX then
+        self.x = maxX
+    end
+
+    self.y = self.y + y
+    if self.y < 0 then
+        self.y = 0 
+    elseif self.y > maxY then
+        self.y = maxY
+    end
 end
 
 function Player.draw (self)
