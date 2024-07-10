@@ -15,7 +15,7 @@ end
 
 function love.draw()
     love.graphics.setColor(1, 1, 1)
-    love.graphics.print("Hello, world", 400, 300)
+    love.graphics.print("El juego de Lauren", 340, 20)
     --love.graphics.setColor(1, 0, 0)
     --local angle  = love.timer.getTime() * 2*math.pi / 2.5
     player:draw()
